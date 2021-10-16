@@ -13,16 +13,15 @@ export class UserEntity {
     @Column({ unique: true, nullable: false })
     username: string
 
+    @Column()
+    email: string
+
     @Column({ nullable: false })
     password: string
 
     @BeforeInsert()
-    async hashPassword(): Promise<void> {
-        this.password = await hash(this.password, 10);
-    }
-
-    async comparePassword(attempt: string): Promise<boolean> {
-        return await compare(attempt, this.password);
+    emailToLowerCase() {
+        this.email = this.email.toLowerCase()
     }
 
 }
