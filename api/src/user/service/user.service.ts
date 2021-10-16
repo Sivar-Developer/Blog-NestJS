@@ -21,6 +21,7 @@ export class UserService {
                 newUser.name = user.name
                 newUser.username = user.username
                 newUser.email = user.email
+                newUser.role = user.role
                 newUser.password = passwordHash
                 return from(this.userRepository.save(newUser)).pipe(
                     map((user: User) => {
@@ -64,6 +65,7 @@ export class UserService {
     login(user: User): Observable<string> {
         return this.validateUser(user.email, user.password).pipe(
             switchMap((user: User) => {
+                console.log(user)
                 if(user) {
                     return this.authservice.generateJwt(user).pipe(map((jwt: string) => jwt))
                 } else {
@@ -92,6 +94,10 @@ export class UserService {
 
     findByEmail(email: string): Observable<User> {
         return from(this.userRepository.findOne({ email: email }))
+    }
+
+    updateRoleOfUser(id: number, user: User): Observable<any> {
+         return from(this.userRepository.update(id, user))
     }
 
 }
