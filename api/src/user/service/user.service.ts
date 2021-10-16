@@ -20,8 +20,8 @@ export class UserService {
         return from(this.userRepository.find())
     }
 
-    findOne(id: number): Observable<User> {
-        return from(this.userRepository.findOne(id))
+    findOne(username: string): Observable<User> {
+        return from(this.userRepository.findOne(username))
     }
 
     deleteOne(id: number): Observable<any> {
