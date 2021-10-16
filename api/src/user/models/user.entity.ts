@@ -1,15 +1,27 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { compare, hash } from "bcrypt";
+import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity('users')
 export class UserEntity {
 
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
+    @Column({ nullable: false })
     name: string
 
-    @Column({ unique: true })
+    @Column({ unique: true, nullable: false })
     username: string
+
+    @Column()
+    email: string
+
+    @Column({ nullable: false })
+    password: string
+
+    @BeforeInsert()
+    emailToLowerCase() {
+        this.email = this.email.toLowerCase()
+    }
 
 }
