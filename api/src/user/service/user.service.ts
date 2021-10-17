@@ -4,7 +4,8 @@ import { catchError, from, map, Observable, switchMap, throwError } from 'rxjs';
 import { AuthService } from 'src/auth/services/auth.service';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../models/user.entity';
-import { User } from '../models/user.interface';
+import { User, UserRole } from '../models/user.interface';
+import { paginate, Pagination, IPaginationOptions } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class UserService {
@@ -21,7 +22,7 @@ export class UserService {
                 newUser.name = user.name
                 newUser.username = user.username
                 newUser.email = user.email
-                newUser.role = user.role
+                newUser.role = UserRole.USER
                 newUser.password = passwordHash
                 return from(this.userRepository.save(newUser)).pipe(
                     map((user: User) => {
@@ -39,6 +40,15 @@ export class UserService {
             map((users: User[]) => {
                 users.forEach((user) => {delete user.password})
                 return users
+            })
+        )
+    }
+
+    paginate(options: IPaginationOptions): Observable<Pagination<User>> {
+        return from(paginate<User>(this.userRepository, options)).pipe(
+            map((usersPageable: Pagination<User>) => {
+                usersPageable.items.forEach(function (v) { delete v.password })
+                return usersPageable
             })
         )
     }
