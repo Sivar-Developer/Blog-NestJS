@@ -277,6 +277,106 @@
 			]
 		},
 		{
+			"name": "Blog",
+			"item": [
+				{
+					"name": "/blogs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/blogs?userId=6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"blogs"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/blogs",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo2LCJuYW1lIjoiU2l2YXIgRGV2ZWxvcGVyIiwidXNlcm5hbWUiOiJzaXZhci5kZXZlbG9wZXJzIiwiZW1haWwiOiJpbmZvNUBzaXZhcnNhcmthd3QuY29tIiwicm9sZSI6ImFkbWluIiwicHJvZmlsZUltYWdlIjoiMTcyODk0MjgyXzE4NzczNjI3ODkxMTI3MDFfNTE0NDQyNTA4OTUxNzYzMzk5M19uKDMpMDY2YWJlNzMtOWM0OS00NDBkLWI1NzYtMThhZDRlNmY0NjNlLmpwZyJ9LCJpYXQiOjE2MzQ1Njg5MjcsImV4cCI6MTYzNDU2OTAyN30.WmBMlO1_c_FMvoNvkiPZkqxKwjwuUr3KbDoNHjRAZZs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Test title\",\n    \"description\": \"Test description\",\n    \"body\": \"Test body\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/blogs",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"blogs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/blogs/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/blogs/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"blogs",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "/",
 			"request": {
 				"method": "GET",
