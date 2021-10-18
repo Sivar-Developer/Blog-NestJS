@@ -99,8 +99,11 @@ export class UserService {
 
     updateOne(id: number, user: User): Observable<any> {
         delete user.email
-        delete user.password
-        return from(this.userRepository.update(id, user))
+        delete user.password 
+        delete user.role
+        return from(this.userRepository.update(id, user)).pipe(
+            switchMap(() => this.findOne(id))
+        )
     }
 
     login(user: User): Observable<string> {
