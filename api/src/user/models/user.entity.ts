@@ -1,5 +1,6 @@
 import { compare, hash } from "bcrypt";
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BlogEntity } from "src/blog/model/blog.entity";
+import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 export enum UserRole {
     ADMIN = 'admin',
@@ -31,6 +32,9 @@ export class UserEntity {
 
     @Column({ nullable: true })
     profileImage: string
+
+    @OneToMany(type => BlogEntity, blog => blog.author)
+    blogs: BlogEntity[]
 
     @BeforeInsert()
     emailToLowerCase() {
