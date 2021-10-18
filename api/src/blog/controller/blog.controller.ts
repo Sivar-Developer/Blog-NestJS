@@ -1,10 +1,27 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Request, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-guard';
 import { UserIsAuthorGuard } from '../guards/user-is-author.guard';
 import { Blog } from '../model/blog.interface';
 import { BlogService } from '../service/blog.service';
+import { v4 as uuidv4 } from 'uuid';
+import path = require('path');
+import { Image } from '../model/image.interface';
+
+
+export const storage = {
+    storage: diskStorage({
+        destination: './uploads/blogs',
+        filename: (req, file, cb) => {
+            const filename: string = path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4()
+            const extension: string = path.parse(file.originalname).ext
+            cb(null, `${filename}${extension}`)
+        }
+    })
+}
 
 @Controller('blogs')
 export class BlogController {
@@ -56,8 +73,10 @@ export class BlogController {
 
     @UseGuards(JwtAuthGuard)
     @Post()
-    store(@Body() blog: Blog, @Request() req): Observable<Blog> {
+    @UseInterceptors(FileInterceptor('headerImage', storage))
+    store(@UploadedFile() file: Image, @Body() blog: Blog, @Request() req): Observable<Blog> {
         const user = req.user
+        if(file) blog.headerImage = file.filename
         return this.blogService.create(user, blog)
     }
 
@@ -71,6 +90,13 @@ export class BlogController {
     @Delete(':id')
     delete(@Param('id') id: number): Observable<any> {
         return this.blogService.delete(Number(id))
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('upload')
+    @UseInterceptors(FileInterceptor('file', storage))
+    uploadFile(@UploadedFile() file, @Request() req): Observable<Image> {
+        return of(file)
     }
 
 }
