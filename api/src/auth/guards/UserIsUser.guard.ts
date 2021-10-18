@@ -13,7 +13,7 @@ export class UserIsUserGuard implements CanActivate {
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
         const request = context.switchToHttp().getRequest()
         const params = request.params
-        const user: User = request.user.user
+        const user: User = request.user
         let hasPermission = false
         if(user.id === Number(params.id)) {
             hasPermission = true

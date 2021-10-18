@@ -21,7 +21,7 @@ export class RoleGuard implements CanActivate {
         }
 
         const request = context.switchToHttp().getRequest()
-        const user = request.user.user
+        const user = request.user
         const hasRoles = () => roles.indexOf(user.role) > -1
         let hasPermission: boolean = false
         if (hasRoles()) { hasPermission = true }
