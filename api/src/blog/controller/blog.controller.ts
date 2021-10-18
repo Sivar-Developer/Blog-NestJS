@@ -26,7 +26,7 @@ export class BlogController {
     @UseGuards(JwtAuthGuard)
     @Post()
     store(@Body() blog: Blog, @Request() req): Observable<Blog> {
-        const user = req.user.user
+        const user = req.user
         return this.blogService.create(user, blog)
     }
 
