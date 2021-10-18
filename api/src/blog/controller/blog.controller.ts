@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, Request, UseGuards } from '@nestjs/common';
+import { Pagination } from 'nestjs-typeorm-paginate';
 import { Observable } from 'rxjs';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-guard';
 import { UserIsAuthorGuard } from '../guards/user-is-author.guard';
@@ -17,6 +18,35 @@ export class BlogController {
         } else {
             return this.blogService.findByUser(userId)
         }
+    }
+
+    @Get('paginated')
+    indexPaginated(
+        @Query('page') page: number = 1,
+        @Query('limit') limit: number = 10,
+    ): Observable<Pagination<Blog>> {
+        limit = limit > 100 ? 100 : limit
+        
+        return this.blogService.paginateAll({
+            limit: Number(limit),
+            page: Number(page),
+            route: 'http://localhost:3000/blogs/paginated'
+        })
+    }
+
+    @Get('paginated/:user')
+    indexPaginatedByUser(
+        @Query('page') page: number = 1,
+        @Query('limit') limit: number = 10,
+        @Param('user') userId: number
+    ): Observable<Pagination<Blog>> {
+        limit = limit > 100 ? 100 : limit
+        
+        return this.blogService.paginateAll({
+            limit: Number(limit),
+            page: Number(page),
+            route: 'http://localhost:3000/blogs/paginated'
+        })
     }
 
     @Get(':id')
