@@ -1,4 +1,4 @@
-import { Blog } from "src/blog/model/blog.interface";
+import { Blog } from "src/blog/model/blog.dto";
 
 export interface User {
     id?: number

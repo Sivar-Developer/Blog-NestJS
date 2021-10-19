@@ -1,11 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, Request, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, Request, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { Observable, of } from 'rxjs';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-guard';
 import { UserIsAuthorGuard } from '../guards/user-is-author.guard';
-import { Blog } from '../model/blog.interface';
+import { Blog } from '../model/blog.dto';
 import { BlogService } from '../service/blog.service';
 import { v4 as uuidv4 } from 'uuid';
 import path = require('path');
@@ -67,7 +67,8 @@ export class BlogController {
     }
 
     @Get(':id')
-    show(@Param('id') id: number): Observable<Blog> {
+    show(@Param('id', ParseIntPipe) id: number): Observable<Blog> {
+        console.log(id)
         return this.blogService.findOne(id)
     }
 
@@ -82,7 +83,7 @@ export class BlogController {
 
     @UseGuards(JwtAuthGuard, UserIsAuthorGuard)
     @Put(':id')
-    update(@Param('id') id: number, @Body() blog: Blog): Observable<Blog> {
+    update(@Param('id', ParseIntPipe) id: number, @Body() blog: Blog): Observable<Blog> {
         return this.blogService.update(Number(id), blog)
     }
 

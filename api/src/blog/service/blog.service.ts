@@ -6,7 +6,7 @@ import { User } from 'src/user/models/user.interface';
 import { UserService } from 'src/user/service/user.service';
 import { Repository } from 'typeorm';
 import { BlogEntity } from '../model/blog.entity';
-import { Blog } from '../model/blog.interface';
+import { Blog } from '../model/blog.dto';
 const slugify = require('slugify')
 
 @Injectable()
